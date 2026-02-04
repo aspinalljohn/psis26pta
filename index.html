@@ -338,9 +338,12 @@
         /* Forms */
         .forms-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 1rem;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
             margin-top: 1rem;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
         }
 
         .form-card {
@@ -551,6 +554,11 @@
 
             .link-label {
                 font-size: 0.75rem;
+            }
+
+            .forms-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
             }
         }
     </style>
