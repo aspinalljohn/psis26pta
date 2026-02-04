@@ -17,6 +17,44 @@
             color: #333;
         }
 
+        /* Scrolling Banner */
+        .scrolling-banner {
+            background: linear-gradient(90deg, #ff6b6b 0%, #ee5a6f 50%, #ff6b6b 100%);
+            color: white;
+            padding: 0.8rem 0;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .scrolling-banner:hover {
+            background: linear-gradient(90deg, #ee5a6f 0%, #ff6b6b 50%, #ee5a6f 100%);
+        }
+
+        .scrolling-banner-content {
+            display: inline-block;
+            white-space: nowrap;
+            animation: scroll-left 20s linear infinite;
+            font-size: 1.2rem;
+            font-weight: bold;
+            letter-spacing: 0.5px;
+        }
+
+        .scrolling-banner-content span {
+            padding: 0 3rem;
+        }
+
+        @keyframes scroll-left {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(-50%);
+            }
+        }
+
         /* Header */
         header {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -454,6 +492,10 @@
 
         /* Responsive */
         @media (max-width: 768px) {
+            .scrolling-banner-content {
+                font-size: 1rem;
+            }
+
             header h1 {
                 font-size: 2rem;
             }
@@ -493,6 +535,16 @@
     </style>
 </head>
 <body>
+    <!-- Scrolling Banner -->
+    <a href="#" class="scrolling-banner" onclick="alert('Replace # with your school store URL'); return false;">
+        <div class="scrolling-banner-content">
+            <span>🛍️ SCHOOL STORE NOW OPEN - CLICK HERE TO PURCHASE</span>
+            <span>🛍️ SCHOOL STORE NOW OPEN - CLICK HERE TO PURCHASE</span>
+            <span>🛍️ SCHOOL STORE NOW OPEN - CLICK HERE TO PURCHASE</span>
+            <span>🛍️ SCHOOL STORE NOW OPEN - CLICK HERE TO PURCHASE</span>
+        </div>
+    </a>
+
     <header>
         <h1>PS 26 PTA</h1>
         <p>Parent Teacher Association - Building Community Together</p>
