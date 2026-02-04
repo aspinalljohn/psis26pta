@@ -305,34 +305,238 @@
             color: #2d3436;
         }
 
-        /* Calendar */
-        .calendar-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 1rem;
-            margin-top: 1rem;
+        /* Interactive Calendar */
+        .calendar-wrapper {
+            max-width: 900px;
+            margin: 2rem auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            overflow: hidden;
         }
 
-        .calendar-item {
-            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+        .calendar-header {
+            background: linear-gradient(135deg, #c41e3a 0%, #8b1538 100%);
             color: white;
             padding: 1.5rem;
-            border-radius: 8px;
-            transition: transform 0.3s;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
-        .calendar-item:hover {
-            transform: translateY(-5px);
-        }
-
-        .calendar-item .date {
+        .calendar-header h3 {
             font-size: 1.5rem;
-            font-weight: bold;
-            margin-bottom: 0.5rem;
+            margin: 0;
         }
 
-        .calendar-item .event {
-            font-size: 1.1rem;
+        .calendar-nav {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .calendar-nav button {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background 0.3s;
+        }
+
+        .calendar-nav button:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        .calendar-days-header {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            background: #f8f9fa;
+            padding: 1rem 0;
+            text-align: center;
+            font-weight: bold;
+            color: #666;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 0;
+        }
+
+        .calendar-day {
+            aspect-ratio: 1;
+            border: 1px solid #e0e0e0;
+            padding: 0.5rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            background: white;
+            min-height: 80px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .calendar-day:hover {
+            background: #f8f9fa;
+            transform: scale(1.02);
+            z-index: 1;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+
+        .calendar-day.other-month {
+            background: #fafafa;
+            color: #ccc;
+        }
+
+        .calendar-day.today {
+            background: linear-gradient(135deg, #ffe8ec 0%, #ffd4d9 100%);
+            border: 2px solid #c41e3a;
+        }
+
+        .calendar-day.has-event {
+            background: linear-gradient(135deg, #e8f1ff 0%, #d4e4ff 100%);
+        }
+
+        .calendar-day.has-event:hover {
+            background: linear-gradient(135deg, #d4e4ff 0%, #c0d8ff 100%);
+        }
+
+        .day-number {
+            font-weight: bold;
+            font-size: 1rem;
+            color: #333;
+            margin-bottom: 0.25rem;
+        }
+
+        .day-events {
+            font-size: 0.75rem;
+            color: #666;
+            flex-grow: 1;
+        }
+
+        .event-dot {
+            width: 6px;
+            height: 6px;
+            background: #4169e1;
+            border-radius: 50%;
+            display: inline-block;
+            margin: 2px;
+        }
+
+        /* Event Modal */
+        .event-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.6);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+
+        .event-modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 12px;
+            max-width: 600px;
+            width: 100%;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            animation: modalSlideIn 0.3s ease-out;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, #c41e3a 0%, #8b1538 100%);
+            color: white;
+            padding: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-radius: 12px 12px 0 0;
+        }
+
+        .modal-header h3 {
+            margin: 0;
+            font-size: 1.5rem;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+            line-height: 1;
+            padding: 0;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s;
+        }
+
+        .modal-close:hover {
+            transform: scale(1.2);
+        }
+
+        .modal-body {
+            padding: 2rem;
+        }
+
+        .event-item {
+            background: linear-gradient(135deg, #e8f1ff 0%, #d4e4ff 100%);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            border-left: 4px solid #4169e1;
+        }
+
+        .event-item h4 {
+            color: #c41e3a;
+            margin: 0 0 0.5rem 0;
+            font-size: 1.2rem;
+        }
+
+        .event-time {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .event-description {
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .no-events {
+            text-align: center;
+            color: #999;
+            padding: 2rem;
+            font-style: italic;
         }
 
         /* Forms */
@@ -602,6 +806,37 @@
                 grid-template-columns: 1fr;
                 gap: 1rem;
             }
+
+            .calendar-header {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+
+            .calendar-header h3 {
+                font-size: 1.2rem;
+            }
+
+            .calendar-day {
+                min-height: 60px;
+                padding: 0.3rem;
+            }
+
+            .day-number {
+                font-size: 0.85rem;
+            }
+
+            .day-events {
+                font-size: 0.65rem;
+            }
+
+            .modal-content {
+                margin: 1rem;
+            }
+
+            .modal-body {
+                padding: 1rem;
+            }
         }
     </style>
 </head>
@@ -757,50 +992,41 @@
 
         <!-- Calendar Section -->
         <section id="calendar">
-            <h2>Upcoming Events</h2>
+            <h2>School Calendar</h2>
 
-            <div class="calendar-grid">
-                <div class="calendar-item">
-                    <div class="date">[Date]</div>
-                    <div class="event">Parent-Teacher Conferences</div>
+            <div class="calendar-wrapper">
+                <div class="calendar-header">
+                    <h3 id="currentMonth"></h3>
+                    <div class="calendar-nav">
+                        <button onclick="previousMonth()">← Previous</button>
+                        <button onclick="nextMonth()">Next →</button>
+                    </div>
                 </div>
 
-                <div class="calendar-item">
-                    <div class="date">[Date]</div>
-                    <div class="event">School Holiday</div>
+                <div class="calendar-days-header">
+                    <div>Sun</div>
+                    <div>Mon</div>
+                    <div>Tue</div>
+                    <div>Wed</div>
+                    <div>Thu</div>
+                    <div>Fri</div>
+                    <div>Sat</div>
                 </div>
 
-                <div class="calendar-item">
-                    <div class="date">[Date]</div>
-                    <div class="event">PTA General Meeting</div>
-                </div>
-
-                <div class="calendar-item">
-                    <div class="date">[Date]</div>
-                    <div class="event">Spring Fundraiser</div>
-                </div>
-
-                <div class="calendar-item">
-                    <div class="date">[Date]</div>
-                    <div class="event">Science Fair</div>
-                </div>
-
-                <div class="calendar-item">
-                    <div class="date">[Date]</div>
-                    <div class="event">Spring Break</div>
-                </div>
-
-                <div class="calendar-item">
-                    <div class="date">[Date]</div>
-                    <div class="event">Spring Concert</div>
-                </div>
-
-                <div class="calendar-item">
-                    <div class="date">[Date]</div>
-                    <div class="event">Field Day</div>
-                </div>
+                <div class="calendar-grid" id="calendarGrid"></div>
             </div>
         </section>
+
+        <!-- Event Modal -->
+        <div class="event-modal" id="eventModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 id="modalDate"></h3>
+                    <button class="modal-close" onclick="closeModal()">&times;</button>
+                </div>
+                <div class="modal-body" id="modalBody"></div>
+            </div>
+        </div>
 
         <!-- PTA Meetings Section -->
         <section id="meetings">
@@ -1054,6 +1280,204 @@
                 });
             });
         });
+
+        // ===== INTERACTIVE CALENDAR =====
+        let currentYear = new Date().getFullYear();
+        let currentMonth = new Date().getMonth();
+
+        // Sample events data - Replace with your actual events
+        const events = {
+            '2026-02-10': [
+                {
+                    title: 'Parent-Teacher Conferences',
+                    time: '3:00 PM - 7:00 PM',
+                    description: 'Spring parent-teacher conferences. Please check your email for scheduling information.'
+                }
+            ],
+            '2026-02-14': [
+                {
+                    title: 'Valentine\'s Day Celebration',
+                    time: '2:00 PM',
+                    description: 'Class Valentine\'s Day party. Please bring valentines for classmates.'
+                }
+            ],
+            '2026-02-17': [
+                {
+                    title: 'Presidents\' Day - No School',
+                    time: 'All Day',
+                    description: 'School closed in observance of Presidents\' Day.'
+                }
+            ],
+            '2026-02-28': [
+                {
+                    title: 'PTA General Meeting',
+                    time: '6:30 PM',
+                    description: 'Monthly PTA meeting in the school cafeteria. All parents welcome!'
+                }
+            ],
+            '2026-03-15': [
+                {
+                    title: 'Spring Fundraiser Begins',
+                    time: 'All Day',
+                    description: 'Annual Spring Fundraiser kickoff. Volunteer sign-ups available.'
+                }
+            ],
+            '2026-03-20': [
+                {
+                    title: 'Science Fair',
+                    time: '5:00 PM - 8:00 PM',
+                    description: 'Annual Science Fair showcasing student projects. Families welcome!'
+                }
+            ],
+            '2026-04-07': [
+                {
+                    title: 'Spring Break Begins',
+                    time: 'All Day',
+                    description: 'Spring break starts. School resumes April 14th.'
+                }
+            ],
+            '2026-04-25': [
+                {
+                    title: 'Spring Concert',
+                    time: '7:00 PM',
+                    description: 'Annual Spring Concert featuring all grade levels. Auditorium.'
+                }
+            ],
+            '2026-05-15': [
+                {
+                    title: 'Field Day',
+                    time: '9:00 AM - 2:00 PM',
+                    description: 'Annual Field Day activities. Volunteers needed!'
+                }
+            ]
+        };
+
+        function renderCalendar() {
+            const firstDay = new Date(currentYear, currentMonth, 1);
+            const lastDay = new Date(currentYear, currentMonth + 1, 0);
+            const prevLastDay = new Date(currentYear, currentMonth, 0);
+            const firstDayIndex = firstDay.getDay();
+            const lastDayIndex = lastDay.getDay();
+            const nextDays = 7 - lastDayIndex - 1;
+
+            const months = [
+                'January', 'February', 'March', 'April', 'May', 'June',
+                'July', 'August', 'September', 'October', 'November', 'December'
+            ];
+
+            document.getElementById('currentMonth').textContent =
+                `${months[currentMonth]} ${currentYear}`;
+
+            let days = '';
+            const today = new Date();
+
+            // Previous month days
+            for (let x = firstDayIndex; x > 0; x--) {
+                days += `<div class="calendar-day other-month">
+                    <div class="day-number">${prevLastDay.getDate() - x + 1}</div>
+                </div>`;
+            }
+
+            // Current month days
+            for (let i = 1; i <= lastDay.getDate(); i++) {
+                const dateStr = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(i).padStart(2, '0')}`;
+                const hasEvents = events[dateStr];
+                const isToday = today.getDate() === i &&
+                               today.getMonth() === currentMonth &&
+                               today.getFullYear() === currentYear;
+
+                let dayClass = 'calendar-day';
+                if (isToday) dayClass += ' today';
+                if (hasEvents) dayClass += ' has-event';
+
+                let eventDots = '';
+                if (hasEvents) {
+                    eventDots = '<div class="day-events">';
+                    for (let j = 0; j < Math.min(hasEvents.length, 3); j++) {
+                        eventDots += '<span class="event-dot"></span>';
+                    }
+                    eventDots += '</div>';
+                }
+
+                days += `<div class="${dayClass}" onclick="showEvents('${dateStr}', ${i})">
+                    <div class="day-number">${i}</div>
+                    ${eventDots}
+                </div>`;
+            }
+
+            // Next month days
+            for (let j = 1; j <= nextDays; j++) {
+                days += `<div class="calendar-day other-month">
+                    <div class="day-number">${j}</div>
+                </div>`;
+            }
+
+            document.getElementById('calendarGrid').innerHTML = days;
+        }
+
+        function showEvents(dateStr, day) {
+            const eventList = events[dateStr];
+            const modal = document.getElementById('eventModal');
+            const modalDate = document.getElementById('modalDate');
+            const modalBody = document.getElementById('modalBody');
+
+            const months = [
+                'January', 'February', 'March', 'April', 'May', 'June',
+                'July', 'August', 'September', 'October', 'November', 'December'
+            ];
+
+            modalDate.textContent = `${months[currentMonth]} ${day}, ${currentYear}`;
+
+            if (eventList && eventList.length > 0) {
+                let content = '';
+                eventList.forEach(event => {
+                    content += `
+                        <div class="event-item">
+                            <h4>${event.title}</h4>
+                            <div class="event-time">🕒 ${event.time}</div>
+                            <div class="event-description">${event.description}</div>
+                        </div>
+                    `;
+                });
+                modalBody.innerHTML = content;
+            } else {
+                modalBody.innerHTML = '<div class="no-events">No events scheduled for this day.</div>';
+            }
+
+            modal.classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('eventModal').classList.remove('active');
+        }
+
+        function previousMonth() {
+            currentMonth--;
+            if (currentMonth < 0) {
+                currentMonth = 11;
+                currentYear--;
+            }
+            renderCalendar();
+        }
+
+        function nextMonth() {
+            currentMonth++;
+            if (currentMonth > 11) {
+                currentMonth = 0;
+                currentYear++;
+            }
+            renderCalendar();
+        }
+
+        // Close modal when clicking outside
+        document.getElementById('eventModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+
+        // Initialize calendar on page load
+        renderCalendar();
     </script>
 </body>
 </html>
